@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+<title>Posts</title>
+{% endblock %}
+
+{% block content %}
+<div class = "ui grid">
+    <div class="row">
+        <div class="four wide column">
+            {{profile}}
+            <br><br>
+            <a href = "{% url 'profile-list-view' %}">
+                <button class="ui primary button">People to follow</button>
+            </a>
+            <br><br>
+            Following:
+            <ul>
+                {% for p in profile.following.all %}
+                    <li>{{p}}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="twelve wide column">
+            Posts:
+            <hr>
+            {% for post in posts %}
+                <div class="ui segment">
+                    {{post.author}}
+                    <hr>
+                    {{post.body}}
+                    <hr>
+                    {{post.author}} {{request.user}}
+                    {% if post.author == request.user %}
+                    update
+                    {% endif %}
+                    <p><a href = "{% url 'comment' post.id %}">comment</a></p>
+
+                    <form action = "{% url 'like-post' %}" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name = 'post_id' value="{{post.id}}">
+                        {% if request.user not in post.liked.all %}
+                            <button class="btn btn-success" type="submit">Like</button>
+                        {% else %}
+                            <button class="btn btn-danger" type="submit">Unlike</button>
+                        {% endif %}
+                       <p>{{ post.liked.all.count }} likes</p>
+                    </form>
+                </div>
+            {% endfor %}
+            <center>
+                {%if posts.has_previous %} 
+                    <a href="?page={{posts.previous_page_number}}">Previous Page</a> 
+                {% endif %}
+                <span>{{post.number}}</span> 
+                
+                {%if posts.has_next %} 
+                    <a href="?page={{posts.next_page_number}}">Next page</a> 
+                {% endif %}
+              </center>
+        </div>
+    </div>
+</div>
+    
+{% endblock %}

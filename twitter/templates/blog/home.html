@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+<title>Home</title>
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-12 col-md-3 pr-4 dont-move">
+        <a href="/"> <h2><img class="img-fluid" width="60" src="{% static 'logo/logo.png' %}">Twitter</h2></a><br>
+        <div class="profile-section">
+        <h3 class="white-important p-2">
+            Profile
+        </h3>
+        <a href="{% url 'profile-update-view' user.id %}"><h2>Update Profile</h2></a>
+        <article class="media content-section" style="height: 140px; width: 100%">
+                <div class="mt-2 d-flex full-width align-items-center">
+                    <img
+                       class="rounded-circle mr-3 img-fluid"
+                       style="width: 90px; height: 90px;"
+                       src="{{ user.profile.image.url }}">
+                       {{profile.image.url}}
+                <div>
+                        <h4 style="text-align: left"
+                                class="white-important">
+                           Hiee {{ user.username }}
+                        </h4>
+                        <h6 style="text-align: left"
+                                class="email-profile">
+                            {{ user.email }}
+                        </h6>
+                        {% if not user.username %}
+                        <h6 style="text-align: left"
+                                class="follow-profile">
+                            <button class="btn btn-primary"><a href="#">Follow</a></button>
+                        </h6>
+                        {% endif %}
+                    </div>
+                    <br><br>
+                </div>
+        </article>
+        <div class = "card">
+            <div class="card-body">
+                {{user.profile.bio}}
+            </div>
+        </div>
+
+{% endblock %}

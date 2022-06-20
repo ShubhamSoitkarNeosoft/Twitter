@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Profile Detail</title>
+{% endblock %}
+
+{% block content %}
+<!-- modal -->
+<div class="ui basic modal" style = "top:200px ; height:400px">
+    <div class="ui icon header">
+      <i class="archive icon"></i>
+      Are you sure you want to follow {{object}} ?
+    </div>
+    <div class="content">
+      <p>By clicking You will see all the tweets tweeted by {{object}}</p>
+    </div>
+    <div class="actions">
+        <form action="{% url 'follow-unfollow-view' %}" method="POST">
+            {% csrf_token %}
+            <input type = "hidden" name = "profile_pk" value = {{object.pk}}>
+            <button type ="submit" class="ui green ok massive button">
+            <i class="checkmark icon"></i>
+            Yes
+            </button>
+        </form>
+    </div>
+</div>
+
+<div class="ui grid">
+    <div class="row">
+        <div class="four wide column">
+            {{object}}
+            <hr>
+            <img
+                   class="rounded-circle mr-3 img-fluid"
+                   style="width: 90px; height: 90px;"
+                   src="{{ profile.image.url }}">
+            <hr>
+            {% if follow %}
+                <form action="{% url 'follow-unfollow-view' %}" method="POST">
+                    {% csrf_token %}
+                    <input type = "hidden" name = "profile_pk" value = {{object.pk}}>
+                    <button type = "submit" class = "ui negative button">unfollow</button>
+                </form>
+            {% else %}
+                <button id = "follow-btn" class="ui positive button">follow</button>
+            {% endif %}
+        </div>
+        <div class="twelve wide column">
+            Posts:
+            {% for post in object.profiles_posts %}
+                <div class="ui segment">
+                    {{post.body}}
+                </div>
+            {% endfor %}    
+        </div>
+    </div>
+</div>
+   
+{% endblock %}
+
+{% block scripts %}
+<script>
+        $(document).ready(function(){
+        $('#follow-btn').click(function(){
+        $('.ui.basic.modal')
+        .modal('show')
+    })
+;
+})
+</script>
+{% endblock %}

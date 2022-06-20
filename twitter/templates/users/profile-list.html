@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<article class="media content-section" style="height: 140px; width: 100%">
+    <div class="mt-2 d-flex full-width align-items-center">
+        <img
+           class="rounded-circle mr-3 img-fluid"
+           style="width: 90px; height: 90px;"
+           src="{{ user.profile.image.url }}">
+    <div>
+            <h4 style="text-align: left"
+                    class="white-important">
+               Hiee {{ user.username }}
+            </h4>
+            <h6 style="text-align: left"
+                    class="email-profile">
+                {{ user.email }}
+            </h6>
+            {% if not user.username %}
+            <h6 style="text-align: left"
+                    class="follow-profile">
+                <button class="btn btn-primary"><a href="#">Follow</a></button>
+            </h6>
+            {% endif %}
+        </div>
+        <br><br>
+    </div>
+</article>
+
+
+
+{% for profile in profiles %}
+    <div class="ui segment">
+        {{profile}}
+            <img
+               class="rounded-circle mr-3 img-fluid"
+               style="width: 90px; height: 90px;"
+               src="{{ profile.image.url }}">
+               {{profile.image.url}}
+        <br>
+        <a href = "{% url 'profile-detail-view' profile.pk %}">
+            <button class="ui primary button">See profile</button>
+        </a>
+    </div>
+    {% endfor %}
+{% endblock %}

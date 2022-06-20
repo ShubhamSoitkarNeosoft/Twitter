@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>profiles to follow</title>
+{% endblock %}
+
+{% block content %}
+    {% for profile in profiles %}
+    <div class="ui segment">
+        {{profile}}
+            <img
+               class="rounded-circle mr-3 img-fluid"
+               style="width: 90px; height: 90px;"
+               src="{{ profile.image.url }}">
+        <br>
+        <a href = "{% url 'profile-detail-view' profile.pk %}">
+            <button class="ui primary button">See profile</button>
+        </a>
+    </div>
+    {% endfor %}
+{% endblock %}
