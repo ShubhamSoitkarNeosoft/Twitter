@@ -78,6 +78,15 @@ class ProfileDetailView(DetailView):
         context["follow"] = follow
         return context
 
+def profile_detail_view(request,pk):
+    view_profile = Profile.objects.get(pk=pk)
+    my_profile = Profile.objects.get(user = request.user)
+    if view_profile.user in my_profile.following.all():
+        follow = True
+    else:
+        follow = False
+    return render(request,'users/detail.html',{'follow':follow, 'view_profile':view_profile, 'my_profile':my_profile})
+
 def profile_update(request,pk):
     pform = ProfileUpdateForm(instance= request.user.profile)
     if request.method == 'POST':
