@@ -41,7 +41,13 @@ def posts_of_following_profiles(request):
         page_obj = p.page(1)
     except EmptyPage:
         page_obj = p.page(p.num_pages)
-    context = {'page_obj': page_obj}
+    for p in page_obj:
+        print(p.author.id,request.user.id)
+        if str(p.author) == str(request.user) :
+            post_owner = True
+        else:
+            post_owner = False
+        print(post_owner)
     return render(request, 'blog/main.html',{'profile':profile, 'posts':page_obj})
 
 
@@ -102,4 +108,21 @@ def like_post(request):
         like.save()
     return redirect(request.META.get('HTTP_REFERER'))
     #return redirect('posts-follow-view') 
+
+def update_post(request,pk):
+    post = Post.objects.get(id = pk)
+    form = PostForm(instance = post)
+    if request.method == 'POST':
+        form = PostForm(data=request.POST, instance=post)
+        if form.is_valid():
+            form.save()
+            return redirect('posts-follow-view')
+    return render(request,'blog/create_tweet.html',{'form':form})
+
+def delete_post(request,pk):
+    if request.method == 'POST':
+        post = Post.objects.get(pk=pk)
+        post.delete()
+        return redirect('posts-follow-view')
+    return render(request,'blog/post_delete_confirm.html')
 

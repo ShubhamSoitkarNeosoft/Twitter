@@ -30,9 +30,13 @@
                     <hr>
                     {{post.body}}
                     <hr>
-                    {{post.author}} {{request.user}}
-                    {% if post.author == request.user %}
-                    update
+                    {% if request.user.id == post.author.id %}
+                    <a href = "{% url 'update-post' post.id %}">
+                        <button class="btn btn-warning">Update</button>
+                    </a>
+                    <a href = "#">
+                        <button class="btn btn-danger">Delete</button>
+                    </a>
                     {% endif %}
                     <p><a href = "{% url 'comment' post.id %}">comment</a></p>
 
