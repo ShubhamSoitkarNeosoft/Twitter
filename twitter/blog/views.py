@@ -137,9 +137,12 @@ def search_profile_view(request,*args,**kwargs):
     #     print(k)
     #return Profile.objects.filter(k)
     query = request.GET.get('q')
-    print(query)
     if len(query) > 0:
         search_results = Profile.objects.filter(user__username__icontains = query)
-    if len(search_results) == 0:
+    else:
+        search_results = 0
+    print(search_results)
+    
+    if str(search_results) == 0:
         search_results = False
     return render(request,'blog/search_profiles.html',{'search_results':search_results})
