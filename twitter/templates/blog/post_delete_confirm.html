@@ -5,5 +5,17 @@
 {% endblock %}
 
 {% block content %}
-<p>Do you really want to delete {{post}} ?</p>
+<div class="container">
+    <div class="jumbotron">
+        <form method="POST">
+            {% csrf_token %}
+            <p>Do you really want to delete {{post}} ?</p>
+            <button type="Submit" class = "btn btn-danger">Yes</button>
+        </form>
+        <hr>
+        <a href="{% url 'posts-follow-view' %}">
+            <button class="btn btn-success">No</button>
+        </a>
+    </div>
+</div>
 {% endblock %}
