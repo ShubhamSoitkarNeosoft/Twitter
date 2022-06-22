@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+<title>Search Profiles</title>
+{% endblock %}
+
+{% block content %}
+{% if search_results %}
+    {% for profile in search_results %}
+        {{profile.user}}
+  
+            <img
+               class="rounded-circle mr-3 img-fluid"
+               style="width: 90px; height: 90px;"
+               src="{{ profile.image.url }}">
+
+            <a href = "{% url 'profile-detail-view' profile.pk %}">
+                <button class="ui primary button">See profile</button>
+            </a>
+  
+        <hr>
+    {% endfor %}
+{% else %}
+            No results found
+{% endif %}
+{% endblock %}

@@ -1,4 +1,5 @@
 import profile
+from django.http import HttpResponse
 from django.shortcuts import render,redirect
 from users.models import Profile
 from .models import Post, Like
@@ -7,6 +8,7 @@ from itertools import chain
 from django.core.paginator import Paginator,PageNotAnInteger, EmptyPage
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 
 @login_required()
 def homeview(request):
@@ -126,3 +128,18 @@ def delete_post(request,pk):
         return redirect('posts-follow-view')
     return render(request,'blog/post_delete_confirm.html')
 
+
+def search_profile_view(request,*args,**kwargs):
+    # k = Q()
+    # profiles = Profile.objects.all()
+    # for profile in profiles:
+    #     k |= Q(user__icontains = profile)
+    #     print(k)
+    #return Profile.objects.filter(k)
+    query = request.GET.get('q')
+    print(query)
+    if len(query) > 0:
+        search_results = Profile.objects.filter(user__username__icontains = query)
+    if len(search_results) == 0:
+        search_results = False
+    return render(request,'blog/search_profiles.html',{'search_results':search_results})
